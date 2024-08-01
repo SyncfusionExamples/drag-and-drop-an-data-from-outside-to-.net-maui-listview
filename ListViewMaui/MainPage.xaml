@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:DragDropSample"
+             x:Class="DragDropSample.MainPage">
+    <ContentPage.BindingContext>
+        <local:ViewModel x:Name="viewModel"/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid RowDefinitions="60,1,*">
+            <StackLayout x:Name="stackView"
+                         Orientation="Horizontal"
+                         BindableLayout.ItemsSource="{Binding DragContactsInfo}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="56">
+                            <Grid.Behaviors>
+                                <local:GridDragBehavior ListView="{x:Reference listView}"/>
+                            </Grid.Behaviors>
+                            <Image Grid.Column="0"  
+                                   Source="{Binding ContactImage}"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   HeightRequest="40" 
+                                   WidthRequest="40">
+                            </Image>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+            <BoxView HeightRequest="1" Grid.Row="1" BackgroundColor="LightGray"/>
+            <local:ListViewExt x:Name="listView" Grid.Row="2"
+                               ItemSize="56"
+                               DragStartMode="OnHold"
+                               ItemsSource="{Binding ContactsInfo}">
+                <local:ListViewExt.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.Behaviors>
+                                <local:GridDropBehavior ListView="{x:Reference listView}"/>
+                            </Grid.Behaviors>
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="56"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0"  Source="{Binding ContactImage}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               HeightRequest="40" WidthRequest="40"/>
+                            <Label Grid.Column="1" 
+                                   Text="{Binding ContactName}" 
+                                   FontSize="{OnPlatform Default=16,WinUI=14}" 
+                                   FontFamily="Roboto-Regular" CharacterSpacing="0.5" 
+                                   VerticalOptions="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </local:ListViewExt.ItemTemplate>
+            </local:ListViewExt>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
